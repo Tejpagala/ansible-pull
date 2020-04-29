@@ -1,0 +1,8 @@
+- name: Install Java 
+  package:
+    name: java 
+    state: installed 
+
+- name: Fetch Latest Version of the Tomcat 
+  shell: curl -s https://tomcat.apache.org/download-80.cgi | grep tar.gz  |grep nofollow | head -1 | awk -F '"' '{print $2}' | awk -F / '{print $(NF-2) }' |sed -e 's/^v//' 
+  register: TOMCAT_VERSION 

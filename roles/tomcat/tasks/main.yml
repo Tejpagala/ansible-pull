@@ -1,0 +1,50 @@
+- name: Add application User 
+  user:
+    name: "{{APPUSER}}"
+
+- name: Downlaod Tomcat 
+  unarchive:
+    src: "{{TOMCAT_URL}}"
+    dest: "{{APPHOME}}"
+    remote_src: yes
+  become_user: "{{APPUSER}}"
+  notify: Restart Tomcat 
+
+- name: Download WAR file 
+  get_url:
+    url: "{{WAR_URL}}"
+    dest: "{{TOMCAT_DIR}}/webapps/student.war" 
+  become_user: "{{APPUSER}}"
+
+- name: Download Tomcat JDBC Driver 
+  get_url:
+    url: "{{JAR_URL}}"
+    dest: "{{TOMCAT_DIR}}/lib/mysql-connector.jar"
+  become_user: "{{APPUSER}}"
+  notify: Restart Tomcat
+
+- name: Update JDBC Connection 
+  template:
+    src: context.xml.j2 
+    dest: "{{TOMCAT_DIR}}/conf/context.xml"
+  become_user: "{{APPUSER}}"
+  notify: Restart Tomcat
+
+- name: Download Tomcat init script 
+  get_url: 
+    url: https://s3-us-west-2.amazonaws.com/studentapi-cit/tomcat-init
+    dest: /etc/init.d/tomcat 
+    mode: 0755
+  notify: Restart Tomcat
+
+- name: Systemd Deamon Reload 
+  shell: systemctl daemon-reload
+
+- name: Start tomcat 
+  service:
+    name: tomcat 
+    state: started 
+    enabled: yes 
+
+
+
