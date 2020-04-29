@@ -1,5 +1,5 @@
 - name: Install web and app server
-  hosts: 172.31.47.255
+  hosts: localhost
 
   become: yes
   roles:
