@@ -1,0 +1,4 @@
+LOGSTASH_SERVER: 172.31.47.121
+FILEBEAT_VERSION: 5.5.3
+PACKAGE_URL: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{FILEBEAT_VERSION}}-x86_64.rpm"
+TOMCAT_VERSION_FULL: "{{TOMCAT_VERSION.stdout}}"

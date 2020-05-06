@@ -1,0 +1,15 @@
+- name: Install Filebeat - Version {{FILEBEAT_VERSION}}
+  package:
+    name: "{{PACKAGE_URL}}"
+    state: installed 
+
+- name: Update FILEBEAT configuration 
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml 
+
+- name: Restart Filebeat 
+  service:
+    name: filebeat 
+    state: restarted 
+    enabled: yes 
