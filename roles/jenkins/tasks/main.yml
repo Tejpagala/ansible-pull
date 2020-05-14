@@ -1,0 +1,23 @@
+- name: Install Java 
+  yum:
+    name: java 
+    state: installed 
+
+- name: Import yum repo file 
+  get_url:
+    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Import rpm key 
+  shell: rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+- name: Install Jenkins 
+  yum:
+    name: jenkins 
+    state: installed 
+
+- name: Start jenkins 
+  service:
+    name: jenkins 
+    state: started 
+    enabled: yes 
